@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+//封装的dto，即数据传输对象
 @Data
 public class EmployeeDTO implements Serializable {
 
