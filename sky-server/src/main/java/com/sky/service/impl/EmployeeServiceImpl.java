@@ -1,16 +1,20 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.sky.constant.MessageConstant;
 import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.context.BaseContext;
 import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -90,6 +95,60 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setCreateUser(BaseContext.getCurrentId());
 
         employeeMapper.inset(employee);
+    }
+
+    @Override
+    public PageResult querypage(EmployeePageQueryDTO employeePageQueryDTO) {
+        //select * from employee limit 0,10
+        //开始分页查询,使用pagehelper插件，实际上插件在后台做的也是字符串的拼接
+        PageHelper.startPage(employeePageQueryDTO.getPage(),employeePageQueryDTO.getPageSize());
+
+        //插件要求返回类型必须为Page类型
+        Page<Employee> page = employeeMapper.pageQuery(employeePageQueryDTO);
+
+        //将page值拿出来封装到我们规定的格式PageResult
+        long total = page.getTotal();
+        List<Employee> records =  page.getResult();
+
+        return new PageResult(total,records);
+
+
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        //update employee set status = ? where id = ?
+        Employee employee = Employee.builder(). //通过构建器创建对象
+                                    status(status).
+                                    id(id).
+                                    build();
+
+
+        employeeMapper.update(employee); //传入实体对象，根据实体对象的属性修改，功能更多，而不仅仅根据两个参数
+    }
+
+
+    //查询员工信息
+    @Override
+    public Employee getById(Long id) {
+        Employee employee = employeeMapper.getById(id);
+        //处理密码
+        employee.setPassword("******");
+        return employee;
+    }
+
+    //新增员工信息
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        //可以重复使用mapper层的update方法，但是需要将update方法传过来的employee对象转化成我们需要的DTO对象
+        Employee employee = new Employee();
+        BeanUtils.copyProperties(employeeDTO,employee);
+
+        employee.setUpdateTime(LocalDateTime.now()); //设置DTO没有的更新时间和更新user
+        employee.setUpdateUser(BaseContext.getCurrentId());
+
+        employeeMapper.update(employee);
+
     }
 
 }
