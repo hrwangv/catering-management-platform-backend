@@ -6,3 +6,10 @@ sky:
     database: sky_take_out
     username: root
     password: whr666
+
+  alioss: # 配置阿里云，获取存在云端的图片，自动出现选项的原因是在common包中已经写了配置文件
+    endpoint: oss-cn-beijing.aliyuncs.com
+    access-key-id: LTAI5tPeFLzsPPT8gG3LPW64
+    access-key-secret: U6k1brOZ8gaOIXv3nXbulGTUzy6Pd7
+    bucket-name: sky-itcast
+# http://oss-cn-beijing.aliyuncs.com

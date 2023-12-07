@@ -1,5 +1,7 @@
 package com.sky.context;
 
+
+//为每个线程创建单独的副本
 public class BaseContext {
 
     public static ThreadLocal<Long> threadLocal = new ThreadLocal<>();
