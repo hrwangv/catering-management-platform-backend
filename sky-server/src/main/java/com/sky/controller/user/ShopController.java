@@ -30,7 +30,7 @@ public class ShopController {
     @GetMapping("/status")
     @ApiOperation("获取店铺营业状态")
     public Result<Integer> getStatus() {
-        Integer shopStatus = (Integer) redisTemplate.opsForValue().get(KEY);
+        Integer shopStatus = (Integer) redisTemplate.opsForValue().get(KEY);//店铺状态放到redis中
         log.info("获取店铺营业状态{}",shopStatus);
         return Result.success(shopStatus);
 

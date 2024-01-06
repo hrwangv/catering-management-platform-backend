@@ -168,8 +168,6 @@ public class DishServiceImpl implements DishService {
         dish.setStatus(status);//修改菜品起售状态
         dishMapper.update(dish);//返回修改后的菜品数
 
-
-
         if (status == StatusConstant.ENABLE) { //如果状态设置是0即停售
             List<Long> ids = new ArrayList<>();
             ids.add(id); //将要修改的id加到要查询的方法中
@@ -184,5 +182,37 @@ public class DishServiceImpl implements DishService {
             }
 
         }
+    }
+
+    //条件查询菜品和口味
+    @Override
+    public List<DishVO> listWithFlavor(Dish dish) {
+        /**
+         * 条件查询菜品和口味
+         * @param dish
+         * @return
+         */
+        List<Dish> dishList = dishMapper.list(dish);
+
+        List<DishVO> dishVOList = new ArrayList<>();
+
+        for (Dish d : dishList) {
+            DishVO dishVO = new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+
+            //根据菜品id查询对应的口味
+            List<DishFlavor> flavors = dishFlavorMapper.getByDishId(d.getId());
+
+            dishVO.setFlavors(flavors);
+            dishVOList.add(dishVO);
+        }
+
+        return dishVOList;
+    }
+
+    @Override
+    public List<DishVO> list(Long categoryId) { //根据分类id查询菜品
+
+        return null;
     }
 }
