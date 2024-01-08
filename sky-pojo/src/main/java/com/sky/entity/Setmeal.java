@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * 套餐
+ * 套餐的实体类
  */
 @Data
 @Builder

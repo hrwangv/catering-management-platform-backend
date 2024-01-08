@@ -74,6 +74,7 @@ public class DishServiceImpl implements DishService {
 
     }
 
+    //菜品的分页查询
     @Override
     public PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO) {
         //select * from dish limit 0,10
@@ -90,6 +91,7 @@ public class DishServiceImpl implements DishService {
         return new PageResult(total, records);
     }
 
+    //菜品的分页删除
     @Override
     @Transactional
     public void deleteBatch(List<Long> ids) {

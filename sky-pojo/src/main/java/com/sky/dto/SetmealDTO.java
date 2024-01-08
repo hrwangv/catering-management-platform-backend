@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//设置套餐数据的输入DTO
 @Data
 public class SetmealDTO implements Serializable {
 
