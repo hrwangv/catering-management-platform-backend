@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace等于mapper接口类的全限定名,这样实现对应 -->
+<mapper namespace="com.sky.mapper.OrderMapper">
+
+<!--返回主键值，sql语句要加两个参数设置，id设为自增且有返回值-->
+    <insert id="insert" parameterType="Orders" useGeneratedKeys="true" keyProperty="id">
+        insert into orders (number,
+                            status,
+                            user_id,
+                            address_book_id,
+                            order_time,
+                            checkout_time,
+                            pay_method,
+                            pay_status,
+                            amount,
+                            remark,
+                            phone,
+                            address,
+                            user_name,
+                            consignee,
+                            estimated_delivery_time,
+                            delivery_status,
+                            pack_amount,
+                            tableware_number,
+                            tableware_status)
+        values (#{number}, #{status},#{userId}, #{addressBookId}, #{orderTime}, #{checkoutTime},
+                #{checkoutTime}, #{payMethod}, #{payStatus}, #{amount}, #{remark},#{phone}, #{address}, #{consignee},
+                #{estimatedDeliveryTime}, #{deliveryStatus}, #{packAmount}, #{tablewareNumber},#{tablewareStatus})
+    </insert>
+
+    <update id="update">
+        update orders
+        <set>
+            <if test="number != null">
+                number = #{number},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="user_id != null">
+                user_id = #{userId},
+            </if>
+            <if test="address_book_id != null">
+                address_book_id = #{addressBookId},
+            </if>
+            <if test="order_time != null">
+                order_time = #{orderTime},
+            </if>
+            <if test="checkout_time != null">
+                checkout_time = #{checkoutTime},
+            </if>
+            <if test="pay_method != null">
+                pay_method = #{payMethod},
+            </if>
+            <if test="pay_status != null">
+                pay_status = #{payStatus}
+            </if>
+            <if test="amount != null">
+                amount = #{amount}
+            </if>
+            <if test="remark != null">
+                remark = #{remark}
+            </if>
+            <if test="phone != null">
+                phone = #{phone}
+            </if>
+            <if test="address != null">
+                address = #{address}
+            </if>
+            <if test="user_name != null">
+                user_name = #{userName}
+            </if>
+            <if test="consignee != null">
+                consignee = #{consignee}
+            </if>
+            <if test="cancel_reason != null">
+                cancel_reason = #{cancelReason}
+            </if>
+            <if test="rejection_reason != null">
+                rejection_reason = #{rejectionReason}
+            </if>
+            <if test="cancel_time != null">
+                cancel_time = #{cancelTime}
+            </if>
+            <if test="estimated_delivery_time != null">
+                estimated_delivery_time = #{estimatedDeliveryTime}
+            </if>
+            <if test="delivery_status != null">
+                delivery_status = #{deliveryStatus}
+            </if>
+            <if test="delivery_time != null">
+                delivery_time = #{deliveryTime}
+            </if>
+            <if test="pack_amount != null">
+                pack_amount = #{packAmount}
+            </if>
+            <if test="tableware_number != null">
+                tableware_number = #{tablewareNumber}
+            </if>
+            <if test="tableware_status != null">
+                tableware_status = #{tablewareStatus}
+            </if>
+        </set>
+        where id = #{id}
+
+    </update>
+
+
+</mapper>
