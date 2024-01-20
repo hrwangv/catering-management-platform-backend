@@ -33,7 +33,7 @@ public class CommonController {
     //返回类型为菜品图片的阿里云链接
     @PostMapping("/upload")
     @ApiOperation(value = "文件上传")
-    public Result<String> upLoad(MultipartFile file) { //形参名注意要与前端传过来的文件名保持一致
+    public Result<String> upLoad(MultipartFile file) { //形参名注意要与前端传过来的文件名保持一致。如果不一致，通过注解指定。形参类型为Spring中的一个api
         log.info("文件上传, {}",file);
 
         try {

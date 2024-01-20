@@ -49,11 +49,11 @@ public class EmployeeController {
 
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
-        claims.put(JwtClaimsConstant.EMP_ID, employee.getId());
+        claims.put(JwtClaimsConstant.EMP_ID, employee.getId()); //将员工id放在一个hashmap中，key是常量字符串，value是要登陆的员工id
         String token = JwtUtil.createJWT(
-                jwtProperties.getAdminSecretKey(),
-                jwtProperties.getAdminTtl(),
-                claims);
+                jwtProperties.getAdminSecretKey(), //生成jwt的算法
+                jwtProperties.getAdminTtl(), //jwt有效时间
+                claims); //请求体，携带信息
 
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder() //通过builder方式创建对象，前提是类前必须加注解
                 .id(employee.getId())
@@ -115,7 +115,7 @@ public class EmployeeController {
     }
 
 
-    //根据jd查询
+    //根据id查询
     @GetMapping("/{id}") //这里的id一定要加花括号，表示路径传参
     @ApiOperation("根据员工id查询")
     public Result<Employee> getById(@PathVariable Long id) {

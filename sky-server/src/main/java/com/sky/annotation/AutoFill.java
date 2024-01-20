@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
  * @Description :自定义注解，表示某个方法需要进行自定义公共字段的填充
  * @Version :
  */
-@Target(ElementType.METHOD) //元注解target，表示注解加到方法上
+@Target(ElementType.METHOD) //元注解target，表示注解加到方法上（这里就是insert和update）
 @Retention(RetentionPolicy.RUNTIME)
 public @interface AutoFill {
     //指定属性（不是方法）数据库操作的类型：更新/修改。因为在查询或者修改时无需公共字段的填充

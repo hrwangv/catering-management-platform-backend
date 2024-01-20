@@ -81,7 +81,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
     }
 
     //日期转换方法
-    //SpringMVC的消息转换器
+    //SpringMVC的消息转换器，将后端传给前端的数据格式转换
     @Override
     protected void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
         log.info("拓展消息转换器");

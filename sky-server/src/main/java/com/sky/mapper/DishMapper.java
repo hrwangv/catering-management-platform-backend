@@ -26,6 +26,7 @@ public interface DishMapper {
     @AutoFill(value = OperationType.INSERT)
     void insert(Dish dish);
 
+//    菜品的分类查询：查菜品表所有数据，以及该菜品对应的分类名称（在id一致的地方左外连接）
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
 
     Dish getById(Long id);
@@ -49,4 +50,7 @@ public interface DishMapper {
      */
     @Select("select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id = #{setmealId}")
     List<Dish> getBySetmealId(Long setmealId);
+
+    @Select("select * from dish where category_id = #{categoryID}")
+    List<Dish> getDishByCategoryID(Long categoryId);
 }

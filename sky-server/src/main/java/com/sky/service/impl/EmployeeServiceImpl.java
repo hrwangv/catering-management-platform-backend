@@ -38,10 +38,10 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
 
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
-        String username = employeeLoginDTO.getUsername();
-        String password = employeeLoginDTO.getPassword();
+        String username = employeeLoginDTO.getUsername();//传进来要登陆的用户名
+        String password = employeeLoginDTO.getPassword();//传进来要登陆的密码
 
-        //1、根据用户名查询数据库中的数据
+        //1、根据输入的用户名查询数据库中的数据
         Employee employee = employeeMapper.getByUsername(username);
 
         //2、处理各种异常情况（用户名不存在、密码不对、账号被锁定）
@@ -97,6 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMapper.inset(employee);
     }
 
+
     @Override
     public PageResult querypage(EmployeePageQueryDTO employeePageQueryDTO) {
         //select * from employee limit 0,10
@@ -115,6 +116,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     }
 
+
     @Override
     public void startOrStop(Integer status, Long id) {
         //update employee set status = ? where id = ?
@@ -122,8 +124,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                                     status(status).
                                     id(id).
                                     build();
-
-
         employeeMapper.update(employee); //传入实体对象，根据实体对象的属性修改，功能更多，而不仅仅根据两个参数
     }
 

@@ -12,6 +12,7 @@
         (#{name}, #{categoryId}, #{price}, #{image}, #{description}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser}, #{status})
     </insert>
 
+
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         select dish.* , category.name as categoryName
         from dish left join category

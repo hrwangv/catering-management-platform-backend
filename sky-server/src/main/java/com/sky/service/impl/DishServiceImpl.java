@@ -137,7 +137,7 @@ public class DishServiceImpl implements DishService {
     }
 
 
-    //根据id修改菜品基本信息和关联的口味表
+    //根据id修改菜品基本信息和同时关联的口味表也要修改
     @Override
     public void updateWithFlavor(DishDTO dishDTO) {
         Dish dish = new Dish();
@@ -173,13 +173,13 @@ public class DishServiceImpl implements DishService {
         if (status == StatusConstant.ENABLE) { //如果状态设置是0即停售
             List<Long> ids = new ArrayList<>();
             ids.add(id); //将要修改的id加到要查询的方法中
-            List<Long> mealIds = setmealDishMapper.getSetmealIdByDishIds(ids);
-            if (mealIds != null && mealIds.size() > 0) { //要删的菜品有关联套餐
+            List<Long> mealIds = setmealDishMapper.getSetmealIdByDishIds(ids);//根据菜品id获得套餐id
+            if (mealIds != null && mealIds.size() > 0) { //如果我们要删的菜品有关联的套餐
                 for (Long mealid : mealIds) {
                     Setmeal setmeal = new Setmeal(); //创建新的对象
                     setmeal.setStatus(status);//这个对象设置状态和id
                     setmeal.setId(mealid);
-                    setmealMapper.update(setmeal);//根据这个对象的id和状态更新数据库套餐表
+                    setmealMapper.update(setmeal);//根据这个对象的id和状态更新数据库套餐表，菜品停售之后套餐也要相应停售
                 }
             }
 
@@ -213,8 +213,11 @@ public class DishServiceImpl implements DishService {
     }
 
     @Override
-    public List<DishVO> list(Long categoryId) { //根据分类id查询菜品
-
-        return null;
+    public List<Dish> list(Long categoryId) { //根据分类id查询菜品
+//        Dish dish = new Dish();
+//        dish.setCategoryId(categoryId);
+//        dish.setStatus(StatusConstant.ENABLE);
+        List<Dish> listDish = dishMapper.getDishByCategoryID(categoryId);
+        return listDish;
     }
 }

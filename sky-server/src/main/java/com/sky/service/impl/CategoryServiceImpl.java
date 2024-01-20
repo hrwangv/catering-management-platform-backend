@@ -41,7 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public void save(CategoryDTO categoryDTO) {
         Category category = new Category();
-        //属性拷贝
+        //属性拷贝，为什么要拷贝？我们希望最后执行数据库操作是按照实体类型
         BeanUtils.copyProperties(categoryDTO, category);
 
         //分类状态默认为禁用状态0
