@@ -38,6 +38,7 @@ public class DishController {
         //构造redis中的key, 规则：dish_分类id，即把要在左边显示的分类内容缓存
         String key = "dish_" + categoryId;
         //在输入要查询的菜品id之后，查询redis中是否存在菜品数据
+        //opsForValue方法是对redis中字符串类型的数据修改
         List<DishVO> list = (List<DishVO>) redisTemplate.opsForValue().get(key);//取出数据类型与放入类型一致
 
         if (list != null && list.size() > 0 ){  //数据确实已经从redis中获取到了
@@ -48,7 +49,7 @@ public class DishController {
         //如果不存在，查询数据库，并缓存到redis中
         Dish dish = new Dish();
         dish.setCategoryId(categoryId);
-        dish.setStatus(StatusConstant.ENABLE);//查询起售中的菜品
+        dish.setStatus(StatusConstant.ENABLE);//设置起售中的菜品
 
         list = dishService.listWithFlavor(dish); //查询数据库中数据
 

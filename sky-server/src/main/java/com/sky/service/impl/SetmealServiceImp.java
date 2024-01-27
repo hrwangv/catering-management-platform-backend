@@ -50,7 +50,7 @@ public class SetmealServiceImp implements SetmealService {
      */
     @Transactional
     public void saveWithDish(SetmealDTO setmealDTO) {
-        Setmeal setmeal = new Setmeal();//创建一个用于传递数据的套餐实体类
+        Setmeal setmeal = new Setmeal();//创建一个用于传递数据的空的套餐实体类
         BeanUtils.copyProperties(setmealDTO, setmeal);//将输入的套餐信息拷贝到套餐实体类中
 
         //向套餐表插入数据
@@ -61,6 +61,7 @@ public class SetmealServiceImp implements SetmealService {
 
         //获取套餐表中的存在的菜品列表
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
+        //对每个
         setmealDishes.forEach(setmealDish -> {
             setmealDish.setSetmealId(setmealId);
         });
@@ -113,6 +114,7 @@ public class SetmealServiceImp implements SetmealService {
         });
     }
 
+    //套餐的分页查询
     @Override
     public PageResult pageQuery(SetmealPageQueryDTO setmealPageQueryDTO) {
         PageHelper.startPage(setmealPageQueryDTO.getPage(),setmealPageQueryDTO.getPageSize());
@@ -154,12 +156,13 @@ public class SetmealServiceImp implements SetmealService {
         //1、修改套餐表，执行update
         setmealMapper.update(setmeal);
 
-        //套餐id
+        //获取要修改的套餐id
         Long setmealId = setmealDTO.getId();
 
         //2、删除套餐和菜品的关联关系，操作setmeal_dish表，执行delete
         setmealDishMapper.deleteBySetmealId(setmealId);
 
+        //获取要修改的套餐对应的菜品
         List<SetmealDish> setmealDishes = setmealDTO.getSetmealDishes();
         setmealDishes.forEach(setmealDish -> {
             setmealDish.setSetmealId(setmealId);
@@ -178,7 +181,7 @@ public class SetmealServiceImp implements SetmealService {
         if(status == StatusConstant.ENABLE){
             //select a.* from dish a left join setmeal_dish b on a.id = b.dish_id where b.setmeal_id = ?
             List<Dish> dishList = dishMapper.getBySetmealId(id);
-            if(dishList != null && dishList.size() > 0){
+            if(dishList != null && !dishList.isEmpty()){
                 dishList.forEach(dish -> {
                     if(StatusConstant.DISABLE == dish.getStatus()){
                         throw new SetmealEnableFailedException(MessageConstant.SETMEAL_ENABLE_FAILED);

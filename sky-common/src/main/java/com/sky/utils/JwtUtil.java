@@ -29,7 +29,7 @@ public class JwtUtil {
         // 设置jwt的body
         JwtBuilder builder = Jwts.builder()
                 // 如果有私有声明，一定要先设置这个自己创建的私有的声明，这个是给builder的claim赋值，一旦写在标准的声明赋值之后，就是覆盖了那些标准的声明的
-                .setClaims(claims)
+                .setClaims(claims) //第二部分，自定义的数据
                 // 设置签名使用的签名算法和签名使用的秘钥
                 .signWith(signatureAlgorithm, secretKey.getBytes(StandardCharsets.UTF_8))
                 // 设置过期时间
@@ -39,7 +39,7 @@ public class JwtUtil {
     }
 
     /**
-     * Token解密
+     * 生成令牌的解密
      *
      * @param secretKey jwt秘钥 此秘钥一定要保留好在服务端, 不能暴露出去, 否则sign就可以被伪造, 如果对接多个客户端建议改造成多个
      * @param token     加密后的token

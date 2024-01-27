@@ -39,7 +39,7 @@ public class UserController {
     @ApiOperation("微信登录")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
         log.info("微信用户登录，{}",userLoginDTO.getCode());
-        //微信用户登录
+        //微信用户登录，返回的是要登陆的user
         User wxlogin = userService.wxlogin(userLoginDTO);
         //为微信用户生成jwt令牌
         HashMap<String, Object> stringObjectHashMap = new HashMap<>();

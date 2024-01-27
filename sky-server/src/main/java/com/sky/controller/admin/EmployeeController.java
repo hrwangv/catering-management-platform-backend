@@ -50,11 +50,13 @@ public class EmployeeController {
         //登录成功后，生成jwt令牌
         Map<String, Object> claims = new HashMap<>();
         claims.put(JwtClaimsConstant.EMP_ID, employee.getId()); //将员工id放在一个hashmap中，key是常量字符串，value是要登陆的员工id
+        //生成令牌
         String token = JwtUtil.createJWT(
                 jwtProperties.getAdminSecretKey(), //生成jwt的算法
                 jwtProperties.getAdminTtl(), //jwt有效时间
                 claims); //请求体，携带信息
 
+        //将JWT令牌封装到返回的员工对象中
         EmployeeLoginVO employeeLoginVO = EmployeeLoginVO.builder() //通过builder方式创建对象，前提是类前必须加注解
                 .id(employee.getId())
                 .userName(employee.getUsername())

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "sky.jwt") //配置属性类，封装配置文件中的配置项
 @Data
+//有了这个配置类，在.yml文件中写配置时，会自动补全
 public class JwtProperties {
 
     /**

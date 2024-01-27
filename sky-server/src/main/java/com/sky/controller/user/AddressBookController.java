@@ -101,6 +101,7 @@ public class AddressBookController {
         AddressBook addressBook = new AddressBook();
         addressBook.setIsDefault(1);
         addressBook.setUserId(BaseContext.getCurrentId());
+        //查询当前用户id和默认地址为1 的地址簿，虽然是list类型，但实际上只有1个数据
         List<AddressBook> list = addressBookService.list(addressBook);
 
         if (list != null && list.size() == 1) {

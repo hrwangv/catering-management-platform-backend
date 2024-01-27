@@ -25,7 +25,7 @@ public class ShopController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-    public static final String KEY = "SHOP_STATUS";
+    public static final String KEY = "SHOP_STATUS"; //存进redis中的key
 
     //设置店铺营业状态
     @PutMapping("/{status}")
@@ -33,7 +33,7 @@ public class ShopController {
     public Result setStatus(@PathVariable Integer status) {
         log.info("设置店铺营业状态{}",status);
         //将状态值放在redis中
-        redisTemplate.opsForValue().set(KEY,status);
+        redisTemplate.opsForValue().set(KEY,status);//字符串类型的值
         return Result.success();
     }
 

@@ -44,14 +44,17 @@ public class UserServiceImpl implements UserService {
         stringStringHashMap.put("js_code",code);
         stringStringHashMap.put("grant_type","authorization_code");
         //调用微信方服务器接口服务，获得当前微信用户的openid
-        String json = HttpClientUtil.doGet(WXLOGIN,stringStringHashMap);
+        //HttpClient接口，实现从Java端发送HTTPget方式请求向微信服务器后端
+        String json = HttpClientUtil.doGet(WXLOGIN,stringStringHashMap); //返回的json格式的字符串，当中包括openid和会话密钥等等
         JSONObject jsonObject = JSON.parseObject(json);//从json字符串解析出openid
 
-        return jsonObject.getString("openid");
+        return jsonObject.getString("openid"); //返回值将key为openID的json转化为字符串
     }
+
     @Override
-    public User wxlogin(UserLoginDTO userLoginDTO) {
-        
+    public User wxlogin(UserLoginDTO userLoginDTO) { //输入的DTO里面仅有code一项
+
+        //通过传进来的DTO对象中的临时码code，调用getOpenID方法，获得openid
         String openid = getOpenid(userLoginDTO.getCode());
 
         //判断openid是否为空，判断是否登录失败
@@ -70,7 +73,7 @@ public class UserServiceImpl implements UserService {
                     .build();
             userMapper.insert(user);
         }
-        //返回这个用户对象
+        //返回这个用户对象，如何知道是哪个对象，根据open_id来的
         return user;
     }
 }

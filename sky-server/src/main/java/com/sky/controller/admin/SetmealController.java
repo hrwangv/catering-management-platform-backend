@@ -39,7 +39,7 @@ public class SetmealController {
      */
     @PostMapping
     @ApiOperation("新增套餐")
-    @CacheEvict(cacheNames = "setmealCache", key = "#setmealDTO.categoryId")//精确清理缓存中动态计算出的key
+    @CacheEvict(cacheNames = "setmealCache", key = "#setmealDTO.categoryId")//精确清理缓存中动态计算出的key，也就是缓存中已经存在的一个key
     //新增前先处理缓存
     public Result save(@RequestBody SetmealDTO setmealDTO) {
         setmealService.saveWithDish(setmealDTO);
@@ -65,7 +65,7 @@ public class SetmealController {
      */
     @DeleteMapping
     @ApiOperation("批量删除套餐")
-    @CacheEvict(cacheNames = "setmealCache", allEntries = true)
+    @CacheEvict(cacheNames = "setmealCache", allEntries = true)//删除前先清理缓存,allEntries清理所有
     public Result delete(@RequestParam List<Long> ids){
         setmealService.deleteBatch(ids);
         return Result.success();
