@@ -19,9 +19,11 @@ public interface OrderMapper {
 
     void insert(Orders orders);
 
+    //根据订单状态和查询时间拆线呢订单信息
     @Select("select * from orders where status = #{status} and order_time < (#{orderTime})")
     List<Orders> getByStatusAndOrderTimeLT(Integer status, LocalDateTime orderTime);
 
+    //修改订单信息
     void update(Orders orders);
 
 
@@ -35,4 +37,8 @@ public interface OrderMapper {
 
     @Select("select * from orders where id = #{id}")
     Orders getById(Long id);
+
+
+
+
 }
