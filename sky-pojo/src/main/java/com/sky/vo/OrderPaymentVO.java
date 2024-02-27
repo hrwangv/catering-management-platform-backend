@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OrderPaymentVO implements Serializable {
-
+//这是小程序调用wxRequestPayment所需要的请求参数
     private String nonceStr; //随机字符串
     private String paySign; //签名
     private String timeStamp; //时间戳

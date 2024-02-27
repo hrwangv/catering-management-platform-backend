@@ -51,6 +51,7 @@ public class UserServiceImpl implements UserService {
         return jsonObject.getString("openid"); //返回值将key为openID的json转化为字符串
     }
 
+    //获取登录成功的用户对象
     @Override
     public User wxlogin(UserLoginDTO userLoginDTO) { //输入的DTO里面仅有code一项
 

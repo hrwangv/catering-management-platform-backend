@@ -80,7 +80,7 @@ public class WeChatPayUtil {
      * @return
      */
     private String post(String url, String body) throws Exception {
-        CloseableHttpClient httpClient = getClient();
+        CloseableHttpClient httpClient = getClient();//通过httpClient方法发送请求
 
         HttpPost httpPost = new HttpPost(url);
         httpPost.addHeader(HttpHeaders.ACCEPT, ContentType.APPLICATION_JSON.toString());
@@ -131,14 +131,17 @@ public class WeChatPayUtil {
      * @param openid      微信用户的openid
      * @return
      */
+    //JSAPI下单，封装参数
     private String jsapi(String orderNum, BigDecimal total, String description, String openid) throws Exception {
         JSONObject jsonObject = new JSONObject();
+        //调用JSAPI下单接口所需要的请求参数
         jsonObject.put("appid", weChatProperties.getAppid());
         jsonObject.put("mchid", weChatProperties.getMchid());
         jsonObject.put("description", description);
         jsonObject.put("out_trade_no", orderNum);
         jsonObject.put("notify_url", weChatProperties.getNotifyUrl());
 
+        //嵌套
         JSONObject amount = new JSONObject();
         amount.put("total", total.multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP).intValue());
         amount.put("currency", "CNY");
@@ -151,7 +154,7 @@ public class WeChatPayUtil {
         jsonObject.put("payer", payer);
 
         String body = jsonObject.toJSONString();
-        return post(JSAPI, body);
+        return post(JSAPI, body); //按照post方式向远程微信服务器JSAPI发送请求，返回的是预订单标识
     }
 
     /**
@@ -164,14 +167,15 @@ public class WeChatPayUtil {
      * @return
      */
     public JSONObject pay(String orderNum, BigDecimal total, String description, String openid) throws Exception {
-        //统一下单，生成预支付交易单
+        //统一下单，生成预支付交易单，调用JSAPI方法(自己按请求数据格式定义的)
         String bodyAsString = jsapi(orderNum, total, description, openid);
+        //bodyAsString也就是返回给我们的预订单标识，也就是第六步，prepayId
         //解析返回结果
         JSONObject jsonObject = JSON.parseObject(bodyAsString);
         System.out.println(jsonObject);
 
         String prepayId = jsonObject.getString("prepay_id");
-        if (prepayId != null) {
+        if (prepayId != null) { //第7步生成带签名的支付信息
             String timeStamp = String.valueOf(System.currentTimeMillis() / 1000);
             String nonceStr = RandomStringUtils.randomNumeric(32);
             ArrayList<Object> list = new ArrayList<>();
@@ -192,7 +196,7 @@ public class WeChatPayUtil {
             signature.update(message);
             String packageSign = Base64.getEncoder().encodeToString(signature.sign());
 
-            //构造数据给微信小程序，用于调起微信支付
+            //构造数据给微信小程序第8步，用于调起微信支付wxRequestPayment第9步
             JSONObject jo = new JSONObject();
             jo.put("timeStamp", timeStamp);
             jo.put("nonceStr", nonceStr);
@@ -200,7 +204,7 @@ public class WeChatPayUtil {
             jo.put("signType", "RSA");
             jo.put("paySign", packageSign);
 
-            return jo;
+            return jo; //要返回的支付参数
         }
         return jsonObject;
     }
